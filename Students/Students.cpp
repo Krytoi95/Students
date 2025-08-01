@@ -1,7 +1,14 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <Windows.h>
 
+#include "Student.h"
+#include "Menu.h"
+#include "Sort.h"
+
+#define RUS
+#define ENG
 // Students 
 
 // This project is designed to practice dynamic arrays, 
@@ -10,118 +17,494 @@
 // and possibly a list of states (students, graduates, enrolling).
 // I chose students because it is a more realistic task
 
-class Menu 
+namespace param
 {
-private:
-    std::string Greeting{
-        "Hi! This is a regular project to practice some topics.\n"
-        "It's made in C++ on OS Windows.\n"
-        "This project is to record students in a file.\n"
-        "Are they in school, are they entering school or are they graduates.\n"
-        "Also their first name, last name, how old they are, their id.\n"
-        "And that's about it.\n"
-    };
-    std::string Enter_Student{
-        "Enter student\n"
-    };
-    std::string Enter_Name{
-    "Enter name: \n"
-    };
-    std::string Enter_Last_Name{
-        "Enter last name: \n"
-    };
-    std::string Enter_Classroom{
-        "Enter classroom: \n"
-    };
-    std::string Enter_Age{
-        "Enter age: \n"
-    };
+    bool end{ false };
+    bool end_write{ false };
+    bool end_read{ false };
+}
 
-public:
-    void Say_Greeting()
-    {
-        std::cout << Greeting << std::endl;
-    }
-    void Say_Enter_Students()
-    {
-        std::cout << Enter_Student << std::endl;
-    }
-    void Say_Enter_Name()
-    {
-        std::cout << Enter_Name << std::endl;
-    }
-    void Say_Enter_Last_Name() 
-    {
-        std::cout << Enter_Last_Name << std::endl;
-    }
-    void Say_Enter_Classroom()
-    {
-        std::cout << Enter_Classroom << std::endl;
-    }
-    void Say_Enter_Age()
-    {
-        std::cout << Enter_Age << std::endl;
-    } 
-
-};
-
-class Sort {};
-
-class Students
+namespace Parameters
 {
-private:
-    int age;
-    static int id;
-    std::string first_name;
-    std::string second_name;
-    std::string classroom;
-public:
-    Students() {}
-    Students(std::string first_name,std::string second_name,std::string classroom, int age)
-    {
-        this->first_name = first_name;
-        this->second_name = second_name; 
-        this->classroom = classroom; 
-        this->age = age;
-        id++;
-    }
-    void info()
-    {
-        std::cout << "F: " << first_name << " S: " << second_name << " CL: " << classroom << " A: " << age  << " I: " << id << std::endl;
-    }
-    // Если известны все данные
-};
+    // Characteristcs for Menu
+    std::string input{};
 
-int Students::id = 0;
+    // Characteristcs for Student
+    std::string Name{};
+    std::string Last_Name{};
+    std::string Date_Of_Birth{};
+    std::string Age{};
+    std::string Classroom{};
+    std::string Status{};
 
-bool write(std::fstream &file)
+    // End
+
+    bool end{};
+    bool end_write{};
+    bool end_read{};
+}
+
+
+    // Check
+    //bool Is_Number(const std::string TEXT)
+    //{
+    //    const std::string NUMBER{ "0123456789" };
+    //    if(NUMBER.find(TEXT[0])>NUMBER.size())
+    //    {
+    //        return false;
+    //    }
+    //     /*for (size_t i = 0; i < NUMBER.size(); i++)
+    //     {
+    //       if (text[0] == NUMBER[i]) 
+    //       {
+    //          
+    //       }
+    //     }*/
+    //    return true;
+    //}
+    //bool Is_String(const std::string TEXT)
+    //{
+    //    const std::string ALPHABET{ "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz" };
+    //    for (size_t i = 0; i < TEXT.size(); i++)
+    //    {
+    //        if(ALPHABET.find(TEXT[i])>ALPHABET.size())
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    return true;
+    //}
+    //bool Is_String_And_Number(const std::string TEXT)
+    //{ 
+    //    const std::string ALPHABET_AND_NUMBER{ "AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSsTtUuVvWwXxYyZz0123456789" };
+    //    for (size_t i = 0; i < TEXT.size(); i++)
+    //    {
+    //        if(ALPHABET_AND_NUMBER.find(TEXT[i])>ALPHABET_AND_NUMBER.size())
+    //        {
+    //            return false;
+    //        }
+    //    }
+    //    return true;
+    //}
+
+void _Init_ID()
 {
-    if (file.is_open() != true)
-    {
-        throw std::exception("Error open file!");
-    }
-    return true;
+    Student temp;
+    temp.Initialisation_ID();
 }
 
 int main()
 {
+    _Init_ID();
     Menu menu;
-    std::string first_name{};
-    std::string second_name{};
-    std::string classroom{};
-    int age{};
+    menu.Greeting();
+    menu.Pause();
+    int Date[3];
+    Student student;
+    while (Parameters::input!="0")
+    {
+        // At zero, the loop will close
+        menu.Clear();
+        menu.Information();
+        std::cin >> Parameters::input;
+        // String length check
+        if (Parameters::input.size() > 1)
+        {
+            menu.Clear();
+            continue;
+        }
+        // Checking for digits in the string
+        if (!menu.Is_Number(Parameters::input))
+        {
+            menu.Clear();
+            continue;
+        }
 
-    std::cout << "Enter Student: \nSecond name: \nClassroom: \nAge: " << std::endl;
-    std::cout << "\nFirst name: " << std::endl;
-    std::cin >> first_name;
-    std::cout << "\nSecond name: " << std::endl;
-    std::cin >> second_name; 
-    std::cout << "\nClassroom: " << std::endl;
-    std::cin >> classroom;
-    std::cout << "\nAge: " << std::endl;
-    std::cin >> age;
-    Students student1(first_name, second_name, classroom, age);
-    student1.info();
+        switch (std::stoi(Parameters::input))
+        {
+        case 1:
+            std::cout << "Im 1" << std::endl;
+            std::cout << menu.Enter_Date_Of_Birth() << std::endl;
+            menu.Pause();
+            break;
+        case 2:
+            std::cout << "Im 2" << std::endl;
+            menu.Pause();
+            break;
+        }
+    }
+
+//    while (std::cin >> input)
+//    {
+//      
+//        if (menu.Is_Number(input))
+//        {
+//            char button { input[0] };
+//            while (param::end == false)
+//            {
+//                switch (button)
+//                {
+//#pragma region Write data
+//                case '1':     
+//#pragma region Name
+//                    system("cls");
+//                    std::cout << "Entering a student in the list\n" << std::endl;
+//                    std::cout << "\nName: " << std::endl;
+//                    while (std::cin >> Name)
+//                    {
+//                        if (!menu.Is_String(Name))
+//                        {
+//                            Name = "";
+//                            system("cls");
+//                            std::cout << "Entering a student in the list\n" << std::endl;
+//                            std::cout << "\nName: " << std::endl;
+//                            continue;
+//                        }
+//                        else
+//                        {
+//                            system("cls");
+//                            std::cout << "Name: " << Name << " is it written correctly?(Y/N||y/n)" << std::endl;
+//
+//                            input = "";
+//                            while (std::cin >> input)
+//                            {
+//                                if (input.size() > 1)
+//                                {
+//                                    system("cls");
+//                                    std::cout << "Name: " << Name << " is it written correctly?(Y/N||y/n)" << std::endl;
+//                                    continue;
+//                                }
+//                                if (input == "Y" || input == "y")
+//                                {
+//                                    break;
+//                                }
+//                                if (input == "N" || input == "n")
+//                                {
+//                                    break;
+//                                }
+//                                system("cls");
+//                                std::cout << "Name: " << Name << " is it written correctly?(Y/N||y/n)" << std::endl;
+//                            }
+//                            if (input == "Y" || input == "y")
+//                            {
+//                                system("cls");
+//                                break;
+//                            }
+//                            if (input == "N" || input == "n")
+//                            {
+//                                system("cls");
+//                                std::cout << "Entering a student in the list\n" << std::endl;
+//                                std::cout << "\nName: " << std::endl;
+//                                continue;
+//                            }
+//                        }
+//                    }
+//#pragma endregion
+//#pragma region Last name
+//                    std::cout << "Entering a student in the list\n" << std::endl;
+//                    std::cout << "\nLast name: " << std::endl;
+//                    while (std::cin >> Last_Name)
+//                    {
+//                        if (!menu.Is_String(Last_Name))
+//                        {
+//                            Last_Name = "";
+//                            system("cls");
+//                            std::cout << "Entering a student in the list\n" << std::endl;
+//                            std::cout << "\nLast name: " << std::endl;
+//                            continue;
+//                        }
+//                        else
+//                        {
+//                            system("cls");
+//                            std::cout << "Last name: " << Last_Name << " is it written correctly?(Y/N||y/n)" << std::endl;
+//
+//                            input = "";
+//                            while (std::cin >> input)
+//                            {
+//                                if (input.size() > 1)
+//                                {
+//                                    system("cls");
+//                                    std::cout << "Last name: " << Last_Name << " is it written correctly?(Y/N||y/n)" << std::endl;
+//                                    continue;
+//                                }
+//                                if (input == "Y" || input == "y")
+//                                {
+//                                    break;
+//                                }
+//                                if (input == "N" || input == "n")
+//                                {
+//                                    break;
+//                                }
+//                                system("cls");
+//                                std::cout << "Last name: " << Last_Name << " is it written correctly?(Y/N||y/n)" << std::endl;
+//                            }
+//                            if (input == "Y" || input == "y")
+//                            {
+//                                system("cls");
+//                                break;
+//                            }
+//                            if (input == "N" || input == "n")
+//                            {
+//                                system("cls");
+//                                std::cout << "Entering a student in the list\n" << std::endl;
+//                                std::cout << "\nLast name: " << std::endl;
+//                                continue;
+//                            }
+//                        }
+//                    }
+//#pragma endregion
+//#pragma region Classroom
+//                    std::cout << "Entering a student in the list\n" << std::endl;
+//                    std::cout << "\nClassroom: " << std::endl;
+//                    while (std::cin >> Classroom)
+//                    {
+//                        if (Classroom.size() > 3)
+//                        {
+//                            Classroom = "";
+//                            system("cls");
+//                            std::cout << "Entering a student in the list\n" << std::endl;
+//                            std::cout << "\nClassroom: " << std::endl;
+//                            continue;
+//                        }
+//                        if (!menu.Is_String_And_Number(Classroom))
+//                        {
+//                            Classroom = "";
+//                            system("cls");
+//                            std::cout << "Entering a student in the list\n" << std::endl;
+//                            std::cout << "\nClassroom: " << std::endl;
+//                            continue;
+//                        }
+//                        else
+//                        {
+//                            system("cls");
+//                            std::cout << "Classroom: " << Classroom << " is it written correctly?(Y/N||y/n)" << std::endl;
+//
+//                            input = "";
+//                            while (std::cin >> input)
+//                            {
+//                                if (input.size() > 1)
+//                                {
+//                                    system("cls");
+//                                    std::cout << "Classroom: " << Classroom << " is it written correctly?(Y/N||y/n)" << std::endl;
+//                                    continue;
+//                                }
+//                                if (input == "Y" || input == "y")
+//                                {
+//                                    break;
+//                                }
+//                                if (input == "N" || input == "n")
+//                                {
+//                                    break;
+//                                }
+//                                system("cls");
+//                                std::cout << "Classroom: " << Classroom << " is it written correctly?(Y/N||y/n)" << std::endl;
+//                            }
+//                            if (input == "Y" || input == "y")
+//                            {
+//                                system("cls");
+//                                break;
+//                            }
+//                            if (input == "N" || input == "n")
+//                            {
+//                                system("cls");
+//                                std::cout << "Entering a student in the list\n" << std::endl;
+//                                std::cout << "\nClassroom: " << std::endl;
+//                                continue;
+//                            }
+//                        }
+//                    }
+//#pragma endregion
+//#pragma region Age
+//                    std::cout << "Entering a student in the list\n" << std::endl;
+//                    std::cout << "\nAge: " << std::endl;
+//                    while (std::cin >> Age)
+//                    {
+//                        if (!menu.Is_Number(Age))
+//                        {
+//                            Age = { "" };
+//                            system("cls");
+//                            std::cout << "Entering a student in the list\n" << std::endl;
+//                            std::cout << "\nAge: " << std::endl;
+//                            continue;
+//                        }
+//                        if (std::stoi(Age) >= 100 || std::stoi(Age) < 7)
+//                        {
+//                            Age = { "" };
+//                            system("cls");
+//                            std::cout << "Entering a student in the list\n" << std::endl;
+//                            std::cout << "\nAge: " << std::endl;
+//                            continue;
+//                        }
+//                        else
+//                        {
+//                            system("cls");
+//                            std::cout << "Age: " << Age << " is it written correctly?(Y/N||y/n)" << std::endl;
+//
+//                            input = "";
+//                            while (std::cin >> input)
+//                            {
+//                                if (input.size() > 1)
+//                                {
+//                                    system("cls");
+//                                    std::cout << "Age: " << Age << " is it written correctly?(Y/N||y/n)" << std::endl;
+//                                    continue;
+//                                }
+//                                if (input == "Y" || input == "y")
+//                                {
+//                                    break;
+//                                }
+//                                if (input == "N" || input == "n")
+//                                {
+//                                    break;
+//                                }
+//                                system("cls");
+//                                std::cout << "Age: " << Age << " is it written correctly?(Y/N||y/n)" << std::endl;
+//                            }
+//                            if (input == "Y" || input == "y")
+//                            {
+//                                system("cls");
+//                                break;
+//                            }
+//                            if (input == "N" || input == "n")
+//                            {
+//                                system("cls");
+//                                std::cout << "Entering a student in the list\n" << std::endl;
+//                                std::cout << "\nAge: " << std::endl;
+//                                continue;
+//                            }
+//                        }
+//                    }
+//#pragma endregion
+//#pragma region Another Student
+//                    system("cls");
+//                    std::cout << "Would you like to sign up another student?(Y/N || y/n)" << std::endl;
+//                    input = "";
+//                    while(std::cin >> input)
+//                    { 
+//                        if (input.size() > 1)
+//                        {
+//                            input = "";
+//                            system("cls");
+//                            std::cout << "Would you like to sign up another student?(Y/N || y/n)" << std::endl;
+//                            continue;
+//                        }
+//                        if (input == "Y" || input == "y")
+//                        {
+//                            /*std::ofstream OutFile;
+//                            OutFile.open("Students.txt", std::ofstream::app);*/
+//                            if (count_students == 0) 
+//                            {
+//                                array_students[count_students] = Students(Name, Last_Name, Classroom, std::stoi(Age));
+//                                count_students++;
+//                            }
+//                            else
+//                            {
+//                                array_students->add_student_in_end_array(array_students, SIZE, Students(Name, Last_Name, Classroom, std::stoi(Age)));
+//                                count_students++;
+//                            }
+//                            break;
+//                        }
+//                        if (input == "N" || input == "n")
+//                        {
+//                            if (count_students == 0)
+//                            {
+//                                array_students[count_students] = Students(Name, Last_Name, Classroom, std::stoi(Age));
+//                                count_students++;
+//                            }
+//                            else
+//                            {
+//                                array_students->add_student_in_end_array(array_students, SIZE, Students(Name, Last_Name, Classroom, std::stoi(Age)));
+//                                count_students++;
+//                            }
+//                            std::ofstream OutFile;
+//                            OutFile.exceptions(std::ofstream::badbit);
+//                            try
+//                            {
+//                                OutFile.open("Students.txt", std::ofstream::app);
+//                                for (size_t i = 0; i < SIZE; i++)
+//                                {
+//                                    OutFile.write((const char*)&array_students[i], sizeof(Students));
+//                                }
+//                                OutFile.close();
+//                            }
+//                            catch (const std::ofstream::failure& ex)
+//                            {
+//                                std::cout <<"Error: " << ex.what() << std::endl;
+//                            }
+//                            std::cout << "Writing data to the list is complete" << std::endl;
+//                            Sleep(2000);
+//                            param::end_write = true;
+//                            //param::end = true;
+//                            break;
+//                        }
+//                    }
+//                    break;
+//#pragma endregion
+//#pragma endregion
+//
+//#pragma region Read List
+//                case '2':
+//                    
+//                    param::end = true;
+//                    break;
+//#pragma endregion
+//                case '0':
+//                    break;
+//                default:
+//                    break;
+//                }
+//
+//
+//
+//
+//
+//                if (param::end_write == true) 
+//                {
+//                    system("cls");
+//                    std::ifstream InFile;
+//                    InFile.exceptions(std::ifstream::badbit);
+//                    try
+//                    {
+//                        InFile.open("Students.txt");
+//                        Students student_temp;
+//                        while(InFile.read((char*)&student_temp, sizeof(Students)))
+//                        {                                                     
+//                            student_temp.info();
+//                        }
+//                        InFile.close();
+//                    }
+//                    catch (const std::ifstream::failure& ex)
+//                    {
+//                        std::cout << "Error: " << ex.what() << std::endl;
+//                    }
+//                    /*for (size_t i = 0; i < SIZE; i++)
+//                    {
+//                        array_students[i].info();
+//                    }*/
+//                    param::end = true;
+//                }
+//            }
+//            break;
+//        }
+//        system("cls");
+//        std::cout << "Write student(1)" << std::endl;
+//        std::cout << "List students(2)" << std::endl;
+//        std::cout << "Leave(0)" << std::endl;
+//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
 
     // Test array 
 
@@ -137,7 +520,7 @@ int main()
 
     // Test write\read object in file
 
-    std::ofstream Write_File;
+   /* std::ofstream Write_File;
     Write_File.open("Students.txt", std::fstream::app);
     try
     {
@@ -145,9 +528,11 @@ int main()
         Write_File.close();
         std::ifstream Read_File;
         Read_File.open("Students.txt");
-        Students student_temp;
-        while (Read_File.read((char*)&student_temp, sizeof(Students)))
+
+        while (!Read_File.eof())
         {
+            Students student_temp;
+            Read_File.read((char*)&student_temp, sizeof(Students));
             student_temp.info();
         }
         Read_File.close();
@@ -155,7 +540,7 @@ int main()
     catch (const std::exception& ex)
     {
         std::cout << ex.what() << std::endl;
-    }
+    }*/
 
     return 0;
 }
