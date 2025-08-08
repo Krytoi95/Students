@@ -1,0 +1,24 @@
+
+Student: 0
+Name: Dimo
+Last name: Melnychuk
+Date of birth: 14.10.2008
+Age: 16
+Classroom: 10A
+State: 2
+
+Student: 1
+Name: Andrew
+Last name: Melnychuk
+Date of birth: 18.1.2007
+Age: 18
+Classroom: 11A
+State: 0
+
+Student: 2
+Name: Anastasia
+Last name: Melnychuk
+Date of birth: 26.3.2011
+Age: 14
+Classroom: 9A
+State: 1

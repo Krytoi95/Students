@@ -8,7 +8,7 @@ int Student::ID = 0;
 
 // Constructor
 Student::Student() {}
-Student::Student(const std::string Name, const std::string Last_Name, const int Date[], const int Age, const std::string Classroom, const State state)
+Student::Student(const std::string Name, const std::string Last_Name, const int Date[], const int Age, const std::string Classroom, const STATUS::State state)
 {
 	this->Name = Name;
 	this->Last_Name = Last_Name;
@@ -86,7 +86,7 @@ void Student::Write_Student_From_File(const int ID)
 			this->Classroom = buffer.erase(0, 11);
 
 			std::getline(ReadInfoFromFile, buffer);
-			this->state = (State)std::stoi(buffer.erase(0,7));
+			this->state = (STATUS::State)std::stoi(buffer.erase(0,7));
 			break;
 		}
 		i++;
@@ -116,7 +116,7 @@ void Student::Read_Student_From_File(Student&student)
 
 // Private Functions
 
-std::string Student::Date_Of_Birth_To_String()
+std::string Student::Date_Of_Birth_To_String ()
 {
 	return std::to_string(Date_Of_Birth[0]) + "." + std::to_string(Date_Of_Birth[1]) + "." + std::to_string(Date_Of_Birth[2]);
 }
@@ -133,10 +133,7 @@ std::string Student::State_To_String()
 	}
 	return "";
 }
-void Student::String_To_Date_Of_Birth(std::string Date, int Date_Of_Birth)
-{
-	std::cout << "Gay!";
-}
+
 
 
 int Student::Search_ID(const Student& student)

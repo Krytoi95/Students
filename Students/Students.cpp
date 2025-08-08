@@ -1,15 +1,29 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+
+
+#include <chrono>
 #include <Windows.h>
 
 #include "Student.h"
 #include "Menu.h"
 #include "Sort.h"
 
-#define RUS
-#define ENG
+#include "DATE.h"
+
 // Students 
+
+//  
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 // This project is designed to practice dynamic arrays, 
 // read and write data to a file, 
@@ -32,10 +46,10 @@ namespace Parameters
     // Characteristcs for Student
     std::string Name{};
     std::string Last_Name{};
-    std::string Date_Of_Birth{};
-    std::string Age{};
+    int Date_Of_Birth[3]{};
+    int Age{};
     std::string Classroom{};
-    std::string Status{};
+    STATUS::State Status{};
 
     // End
 
@@ -43,7 +57,6 @@ namespace Parameters
     bool end_write{};
     bool end_read{};
 }
-
 
     // Check
     //bool Is_Number(const std::string TEXT)
@@ -91,16 +104,19 @@ void _Init_ID()
 {
     Student temp;
     temp.Initialisation_ID();
-}
+} // ??
+                                    
+
 
 int main()
 {
+    SetConsoleOutputCP(CP_UTF8);
+    SetConsoleCP(CP_UTF8);
+    
     _Init_ID();
     Menu menu;
-    menu.Greeting();
-    menu.Pause();
-    int Date[3];
-    Student student;
+    /*menu.Greeting();*/
+
     while (Parameters::input!="0")
     {
         // At zero, the loop will close
@@ -119,18 +135,32 @@ int main()
             menu.Clear();
             continue;
         }
-
         switch (std::stoi(Parameters::input))
         {
         case 1:
-            std::cout << "Im 1" << std::endl;
-            std::cout << menu.Enter_Date_Of_Birth() << std::endl;
+        {
+            Parameters::Name = menu.Enter_Name();
+            Parameters::Last_Name = menu.Enter_Last_Name();
+            menu.Enter_Date_Of_Birth(Parameters::Date_Of_Birth);
+            Date::DATE date(menu.To_String_Date(Parameters::Date_Of_Birth));
+            Parameters::Age = menu.Enter_Age(date);
+            Parameters::Classroom = menu.Enter_Classroom();
+            Parameters::Status = menu.Enter_State();
+            Parameters::end_write = true;
             menu.Pause();
             break;
+        }
         case 2:
+        {
             std::cout << "Im 2" << std::endl;
+            if (Parameters::end_write == true)
+            {
+                Student student{ Parameters::Name, Parameters::Last_Name, Parameters::Date_Of_Birth, Parameters::Age, Parameters::Classroom, Parameters::Status };
+                student.Info();
+            }
             menu.Pause();
             break;
+        }
         }
     }
 
@@ -494,7 +524,17 @@ int main()
 
 
 
-
+//bool Menu::Is_Number(const std::string TEXT)
+//{
+//	const std::string NUMBER{ "0123456789" };
+//	for (size_t i = 0; i < TEXT.size(); i++)
+//	{
+//		if (NUMBER.find(TEXT[i]) > NUMBER.size()) {
+//			return false;
+//		}
+//	}
+//	return true;
+//}
 
 
 
@@ -545,3 +585,12 @@ int main()
     return 0;
 }
 
+/*auto start = std::chrono::high_resolution_clock::now();
+    for (char i = 0; i < 127; i++)
+    {
+        std::string j{i};
+        Is_String(j);
+    }
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration<double, std::milli> duration_ms = end - start;
+    std::cout << "Time: " << duration_ms.count() << " milisec\n";*/

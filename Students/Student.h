@@ -4,19 +4,23 @@
 #include <string>
 #include <fstream>
 
-class Student
+namespace STATUS
 {
-public:
-    // Info Student
     enum State
     {
         Graduate,
         Study,
         Admission
     };
+}
+class Student
+{
+public:
+    // Info Student
+    
     // Functions
     Student();
-    Student(const std::string Name, const std::string Last_Name, const int Date[], const int Age, const std::string Classroom, const State state);
+    Student(const std::string Name, const std::string Last_Name, const int Date[], const int Age, const std::string Classroom, const STATUS::State state);
     void Info();
 
     void Write_Student_In_File();
@@ -37,7 +41,7 @@ private:
     int Age{};
     std::string Classroom{};
     int ID_Student{};
-    State state;
+    STATUS::State state;
     //Global Info
     static int ID;
 
@@ -45,7 +49,7 @@ private:
 
     std::string Date_Of_Birth_To_String();
     std::string State_To_String();
-    void String_To_Date_Of_Birth(std::string Date, int Date_Of_Birth);
+
     
 
     int Search_ID(const Student&student);
